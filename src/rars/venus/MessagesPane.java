@@ -341,6 +341,8 @@ public class MessagesPane extends JPanel {
                 currentPane = editTabbedPane.getCurrentEditTab();
             }
         }
+        Globals.getGui().getMainPane().setSelectedComponent(editTabbedPane);
+
         // If editPane == null, it means the desired file was not open.  Line selection
         // does not properly with the JEditTextArea editor in this situation (it works
         // fine for the original generic editor).  So we just won't do it. DPS 9-Aug-2010
