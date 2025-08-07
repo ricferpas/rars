@@ -1,6 +1,7 @@
 #!/bin/bash
 if git submodule status | grep \( > /dev/null ; then 
-    version=$(git describe --tags --match 'v*' --dirty | cut -c2-)
+    #version=$(git describe --tags --match 'v*' --dirty | cut -c2-)
+    version=$(git describe --dirty --always --tags)
     echo "Version = $version" > src/Version.properties
     mkdir -p build
     find src -name "*.java" | xargs javac --release 11 -d build
