@@ -130,6 +130,16 @@ public class SystemIO {
         return Double.parseDouble(input.trim());
     }
 
+    public static void clearScreen() {
+        if (Globals.getGui() == null) {
+            // ANSI vt100 escape sequence for clearing the screen
+            System.out.print(new char[] { 0x1b, 0x5b, 0x32, 0x4a });
+            System.out.print(new char[] { 0x1b, 0x5b, 0x30, 0x3b, 0x30, 0x66 });
+        } else {
+            Globals.getGui().getMessagesPane().clearRunMessages();
+        }
+    }
+
     /**
      * Implements syscall having 4 in $v0, to print a string.
      */

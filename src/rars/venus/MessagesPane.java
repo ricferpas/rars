@@ -449,6 +449,13 @@ public class MessagesPane extends JPanel {
                 });
     }
 
+        public void clearRunMessages() {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    run.setText("");
+                }});
+        }
+
     /**
      * Make the assembler message tab current (up front)
      */
