@@ -20,14 +20,12 @@ public class CCDebug {
         final byte RS_WRITTEN = 0x1;
         final byte RS_SAVED = 0x2;
 
-        byte regStatus[];
-        long regInitialValues[];
+        byte regStatus[] = new byte[32];
+        long regInitialValues[] = new long[32];
         State caller;
         ProgramStatement callerStatement = null;
 
         public State() {
-            regStatus = new byte[32];
-            regInitialValues = new long[32];
             for (int i = 0; i < 32; ++i) {
                 regInitialValues[i] = RegisterFile.getRegisters()[i].getValueNoNotify();
             }
@@ -86,28 +84,25 @@ public class CCDebug {
     public CCDebug(Simulator simulator) {
         this.simulator = simulator;
         reset();
-        RegisterFile.addRegistersObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                if (started) {
-                    Register r = (Register) o;
-                    RegisterAccessNotice ran = (RegisterAccessNotice) arg;
-                    int regno = r.getNumber();
-                    if (regno < 32) {
-                    	ProgramStatement cs = getCurrentStatement();
-                        if (cs != null) { // cs may be null if a notification is processed after the program has been paused (race condition with the GUI thread)
-                            if (ran.getAccessType() == RegisterAccessNotice.WRITE) {
-                                if (isPreserved(regno) && !state.registerIsSaved(regno) && !state.registerIsWritten(regno)) {
-                                    msg("Write of unsaved callee-saved register " + r.getName() + " (" + regno + "). " + generateBacktrace());
-                                }
-                                state.writeRegister(regno);
-                            } else {
-                                assert (ran.getAccessType() == RegisterAccessNotice.READ);
-                                if (cs.getInstruction().getName().equals("sw") && cs.getOperand(2) == REG_SP) {
-                                    state.saveRegister(regno);
-                                } else if (regno != 0 && !state.registerIsWritten(regno)) {
-                                    msg("Read of uninitialized register " + r.getName() + " (" + regno + "). " + generateBacktrace());
-                                }
+        RegisterFile.addRegistersObserver((o, arg) -> {
+            if (started) {
+                Register r = (Register) o;
+                RegisterAccessNotice ran = (RegisterAccessNotice) arg;
+                int regno = r.getNumber();
+                if (regno < 32) {
+                    ProgramStatement cs = getCurrentStatement();
+                    if (cs != null) { // cs may be null if a notification is processed after the program has been paused (race condition with the GUI thread)
+                        if (ran.getAccessType() == RegisterAccessNotice.WRITE) {
+                            if (isPreserved(regno) && !state.registerIsSaved(regno) && !state.registerIsWritten(regno)) {
+                                msg("Write of unsaved callee-saved register " + r.getName() + " (" + regno + "). " + generateBacktrace());
+                            }
+                            state.writeRegister(regno);
+                        } else {
+                            assert (ran.getAccessType() == RegisterAccessNotice.READ);
+                            if (cs.getInstruction().getName().equals("sw") && cs.getOperand(2) == REG_SP) {
+                                state.saveRegister(regno);
+                            } else if (regno != 0 && !state.registerIsWritten(regno)) {
+                                msg("Read of uninitialized register " + r.getName() + " (" + regno + "). " + generateBacktrace());
                             }
                         }
                     }
