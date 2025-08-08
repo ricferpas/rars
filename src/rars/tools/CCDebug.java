@@ -213,8 +213,8 @@ public class CCDebug {
         numErrors = 0;
         messages.clear();
         pushState(); // main
-        state.writeRegister(4); // $a0 = argc
-        state.writeRegister(5); // $a1 = argv
+        state.writeRegister(10); // a0 = argc
+        state.writeRegister(11); // a1 = argv
     }
 
     private void pushState() {
