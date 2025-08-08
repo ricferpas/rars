@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SCRIPTS_DIR="$(dirname "$(realpath "$0")")"
+
+JAR_FILE="rars.jar"
+(
+    cd "${SCRIPTS_DIR}/"
+    make -q "${JAR_FILE}" &> /dev/null || {
+        echo "jar no encontrado o desactualizado, compilando…" 2>&1 
+        make --quiet "${JAR_FILE}"
+    }
+) || exit $?
+
+#MEM="$(printf "24576\n$(($(grep "MemTotal:" /proc/meminfo | head -n1 | tr -s " " | cut -d" " -f2) * 4 / 7 / 1024))\n" | sort -n | head -n1)"
+#export JAVA_OPTS="${JAVA_OPTS:-Xmx${MEM}m}"
+
+exec java -jar "${SCRIPTS_DIR}/${JAR_FILE}" "$@"
+
