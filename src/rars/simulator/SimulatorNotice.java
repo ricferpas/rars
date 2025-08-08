@@ -25,8 +25,8 @@ public class SimulatorNotice {
 
     public static final int SIMULATOR_START = 0;
     public static final int SIMULATOR_STOP = 1;
-        public static final int SIMULATOR_CALL  = 2;
-        public static final int SIMULATOR_RETURN  = 3;
+    public static final int SIMULATOR_CALL  = 2;
+    public static final int SIMULATOR_RETURN  = 3;
 
     /**
      * Constructor will be called only within this package, so assume

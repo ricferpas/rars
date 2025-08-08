@@ -43,13 +43,6 @@ public class Simulator extends Observable {
           ccd.reset();
       }
       
-   	/** various reasons for simulate to end... */
-      public static final int BREAKPOINT = 1;
-      public static final int EXCEPTION  = 2;
-      public static final int MAX_STEPS  = 3;  // includes step mode (where maxSteps is 1)
-      public static final int NORMAL_TERMINATION = 4;
-      public static final int CLIFF_TERMINATION = 5; // run off bottom of program
-      public static final int PAUSE_OR_STOP = 6;
 
     /**
      * Returns the Simulator object
