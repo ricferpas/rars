@@ -38,6 +38,19 @@ public class Simulator extends Observable {
         STOP
     }
 
+      rars.tools.CCDebug ccd = new rars.tools.CCDebug(this);
+      public void resetCCDebug() {
+          ccd.reset();
+      }
+      
+   	/** various reasons for simulate to end... */
+      public static final int BREAKPOINT = 1;
+      public static final int EXCEPTION  = 2;
+      public static final int MAX_STEPS  = 3;  // includes step mode (where maxSteps is 1)
+      public static final int NORMAL_TERMINATION = 4;
+      public static final int CLIFF_TERMINATION = 5; // run off bottom of program
+      public static final int PAUSE_OR_STOP = 6;
+
     /**
      * Returns the Simulator object
      *
@@ -60,6 +73,14 @@ public class Simulator extends Observable {
             interactiveGUIUpdater = new UpdateGUI();
         }
     }
+
+   public ProgramStatement getCurrentStatement() {
+       if (simulatorThread == null) {
+           return null;
+       } else {
+           return simulatorThread.getCurrentStatement();
+       }
+   }
 
     /**
      * Simulate execution of given source program (in this thread).  It must have already been assembled.
@@ -156,6 +177,16 @@ public class Simulator extends Observable {
         this.notifyObservers(notice);
     }
 
+    public void notifyObserversOfCall(long pc, ProgramStatement statement) {
+        this.setChanged();
+        this.notifyObservers(new SimulatorNotice(SimulatorNotice.SIMULATOR_CALL, simulatorThread.maxSteps, RunSpeedPanel.getInstance().getRunSpeed(), pc, null, null, false, statement));
+    }
+
+    public void notifyObserversOfReturn(long pc, ProgramStatement statement) {
+        this.setChanged();
+        this.notifyObservers(new SimulatorNotice(SimulatorNotice.SIMULATOR_RETURN, simulatorThread.maxSteps, RunSpeedPanel.getInstance().getRunSpeed(), pc, null, null, false, statement));
+    }
+
     public void interrupt() {
         if (simulatorThread == null) return;
         simulatorThread.interrupt();
@@ -190,6 +221,12 @@ public class Simulator extends Observable {
             this.pe = null;
         }
 
+        ProgramStatement statement = null;
+
+        public ProgramStatement getCurrentStatement() {
+            return statement;
+        }
+
         /**
          * Sets to "true" the volatile boolean variable that is tested after each
          * instruction is executed.  After calling this method, the next test
@@ -206,7 +243,7 @@ public class Simulator extends Observable {
         private void startExecution() {
             Simulator.getInstance().notifyObserversOfExecution(new SimulatorNotice(SimulatorNotice.SIMULATOR_START,
                     maxSteps,(Globals.getGui() != null || Globals.runSpeedPanelExists)?RunSpeedPanel.getInstance().getRunSpeed():RunSpeedPanel.UNLIMITED_SPEED,
-                    pc, null, pe, done));
+                    pc, null, pe, done, getCurrentStatement()));
         }
 
         private void stopExecution(boolean done, Reason reason) {
@@ -215,8 +252,8 @@ public class Simulator extends Observable {
             SystemIO.flush(true);
             if (done) SystemIO.resetFiles(); // close any files opened in the process of simulating
             Simulator.getInstance().notifyObserversOfExecution(new SimulatorNotice(SimulatorNotice.SIMULATOR_STOP,
-                    maxSteps, (Globals.getGui() != null || Globals.runSpeedPanelExists)?RunSpeedPanel.getInstance().getRunSpeed():RunSpeedPanel.UNLIMITED_SPEED,
-                    pc, reason, pe, done));
+              maxSteps, (Globals.getGui() != null || Globals.runSpeedPanelExists)?RunSpeedPanel.getInstance().getRunSpeed():RunSpeedPanel.UNLIMITED_SPEED,
+                    pc, reason, pe, done, getCurrentStatement()));
         }
 
         private synchronized void interrupt() {
@@ -352,7 +389,6 @@ public class Simulator extends Observable {
             // *********************************************************************
 
             RegisterFile.initializeProgramCounter(pc);
-            ProgramStatement statement = null;
             int steps = 0;
             boolean ebreak = false, waiting = false;
 

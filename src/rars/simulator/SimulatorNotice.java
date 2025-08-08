@@ -1,5 +1,6 @@
 package rars.simulator;
 
+import rars.ProgramStatement;
 import rars.SimulationException;
 import rars.venus.run.RunSpeedPanel;
 
@@ -19,15 +20,19 @@ public class SimulatorNotice {
     private boolean done;
     private SimulationException exception;
     private double runSpeed;
-    private int programCounter;
+    private long programCounter;
+    private ProgramStatement statement;
+
     public static final int SIMULATOR_START = 0;
     public static final int SIMULATOR_STOP = 1;
+        public static final int SIMULATOR_CALL  = 2;
+        public static final int SIMULATOR_RETURN  = 3;
 
     /**
      * Constructor will be called only within this package, so assume
      * address and length are in valid ranges.
      */
-    public SimulatorNotice(int action, int maxSteps, double runSpeed, int programCounter, Simulator.Reason reason, SimulationException se, boolean done) {
+    public SimulatorNotice(int action, int maxSteps, double runSpeed, long programCounter, Simulator.Reason reason, SimulationException se, boolean done, ProgramStatement statement) {
         this.action = action;
         this.maxSteps = maxSteps;
         this.runSpeed = runSpeed;
@@ -35,6 +40,7 @@ public class SimulatorNotice {
         this.reason = reason;
         this.exception = se;
         this.done = done;
+	this.statement = statement;
     }
 
     public int getAction() {
@@ -49,7 +55,7 @@ public class SimulatorNotice {
         return this.runSpeed;
     }
 
-    public int getProgramCounter() {
+    public long getProgramCounter() {
         return this.programCounter;
     }
 
@@ -69,9 +75,8 @@ public class SimulatorNotice {
      * String representation indicates access type, address and length in bytes
      */
     public String toString() {
-        return ((this.getAction() == SIMULATOR_START) ? "START " : "STOP  ") +
-                "Max Steps " + this.maxSteps + " " +
-                "Speed " + ((this.runSpeed == RunSpeedPanel.UNLIMITED_SPEED) ? "unlimited " : "" + this.runSpeed + " inst/sec") +
-                "Prog Ctr " + this.programCounter;
+        return ((getAction() == SIMULATOR_START) ? "START " : getAction() == SIMULATOR_STOP ? "STOP:  " : getAction() == SIMULATOR_CALL ? "CALL:  " : "RETURN:  ") + "Max Steps "
+                + this.maxSteps + " " + "Speed " + ((this.runSpeed == rars.venus.run.RunSpeedPanel.UNLIMITED_SPEED) ? "unlimited " : "" + this.runSpeed + " inst/sec") + "Prog Ctr "
+                + this.programCounter;
     }
 }

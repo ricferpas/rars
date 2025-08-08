@@ -6,6 +6,7 @@ import rars.riscv.BasicInstruction;
 import rars.riscv.BasicInstructionFormat;
 import rars.riscv.Instruction;
 import rars.riscv.InstructionSet;
+import rars.simulator.Simulator;
 
 public class JAL extends BasicInstruction {
     public JAL() {
@@ -17,5 +18,8 @@ public class JAL extends BasicInstruction {
         int[] operands = statement.getOperands();
         InstructionSet.processReturnAddress(operands[0]);
         InstructionSet.processJump(RegisterFile.getProgramCounter() - Instruction.INSTRUCTION_LENGTH + operands[1]);
+        if (operands[0] == 1) {
+            Simulator.getInstance().notifyObserversOfCall(RegisterFile.getProgramCounterRegister().getValueNoNotify(), statement);
+        }
     }
 }

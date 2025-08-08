@@ -138,8 +138,13 @@ public class Settings extends Observable {
         /**
          * Flag to determine whether or not the register numbers are displayed.
          */
-        DISPLAY_REGISTER_NUMBERS("DisplayRegisterNumbers", true);
+        DISPLAY_REGISTER_NUMBERS("DisplayRegisterNumbers", true),
 
+        /**
+         * Flag to enable or disable the calling conventions debugger.
+         */
+        CC_DEBUG_ENABLED("CCDebug", true);
+        
         // TODO: add option for turning off user trap handling and interrupts
         private String name;
         private boolean value;
