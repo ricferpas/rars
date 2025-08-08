@@ -42,6 +42,7 @@ public class RarsTest {
 
     Program setupProgram(boolean rv64) {
         Globals.initialize();
+        Globals.getSettings().setBooleanSettingNonPersistent(Settings.Bool.START_AT_MAIN, false);
         Globals.getSettings().setBooleanSettingNonPersistent(Settings.Bool.RV64_ENABLED,rv64);
         InstructionSet.rv64 = rv64;
         Globals.instructionSet.populate();
