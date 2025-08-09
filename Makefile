@@ -1,5 +1,4 @@
-
-default: rars.jar rars-flatlaf.sh
+default: rars.jar rars-flatlaf.jar
 
 SOURCES=$(shell find -L src/ -type f)
 
@@ -10,6 +9,5 @@ rars-flatlaf.jar: rars.jar
 	./build-jar-flatlaf.sh
 
 clean:
-	rm -f rars.jar
-	rm -rf build
+	rm -f rars.jar rars-flatlaf.jar
 

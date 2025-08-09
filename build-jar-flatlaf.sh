@@ -1,18 +1,25 @@
 #!/bin/sh
 
-flatlaf="flatlaf-3.2.jar"
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+SCRIPT_COMMAND="$0"
+set -o nounset
+set -o pipefail
+set -o errexit
+trap 'echo "$SCRIPT_COMMAND: error $? at line $LINENO"' ERR
 
-if [ ! -f "$flatlaf" ]; then
-	curl https://repo1.maven.org/maven2/com/formdev/flatlaf/3.2/flatlaf-3.2.jar -o "$flatlaf"
+cd "$SCRIPT_DIR"
+
+flatlaf_jar="flatlaf-3.2.jar"
+
+if [ ! -f "$flatlaf_jar" ]; then
+    curl https://repo1.maven.org/maven2/com/formdev/flatlaf/3.2/flatlaf-3.2.jar -o "$flatlaf_jar"
 fi
 
-rm -r tmp/
-mkdir -p tmp/
-cd tmp/
+TMPDIR="$(mktemp -d)"
+cd "$TMPDIR"
 
-
-jar x < ../rars.jar
-jar x < "../$flatlaf"
+jar x < "${SCRIPT_DIR}/rars.jar"
+jar x < "${SCRIPT_DIR}/${flatlaf_jar}"
 
 cat > META-INF/MANIFEST.MF <<EOF
 Manifest-Version: 1.0
@@ -21,5 +28,6 @@ Multi-Release: true
 Main-Class: rars.Launch
 EOF
 
-jar cfm ../rars-flatlaf.jar META-INF/MANIFEST.MF *
-chmod +x ../rars-flatlaf.jar
+jar cfm "${SCRIPT_DIR}/rars-flatlaf.jar" META-INF/MANIFEST.MF *
+chmod +x "${SCRIPT_DIR}/rars-flatlaf.jar"
+rm -rf "$TMPDIR"

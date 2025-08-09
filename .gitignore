@@ -3,8 +3,6 @@ out
 *.class
 
 # Build products
-build
-tmp
 flatlaf-3.2.jar
 rars.jar
 rars-flatlaf.jar
