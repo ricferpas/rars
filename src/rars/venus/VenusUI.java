@@ -18,6 +18,8 @@ import rars.venus.settings.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -185,6 +187,18 @@ public class VenusUI extends JFrame {
         center.add(jp, BorderLayout.NORTH);
         center.add(horizonSplitter);
 
+        PropertyChangeListener adjustInternalWindowBounds = new PropertyChangeListener() {
+            @Override public void propertyChange(PropertyChangeEvent evt) {
+                // this needs to be done in an invokeLater because otherwise the old positions of the splitters are used
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        getMainPane().getExecutePane().setWindowBounds();
+                    }
+                });
+            }
+        };
+        horizonSplitter.addPropertyChangeListener("dividerLocation", adjustInternalWindowBounds);
+        splitter.addPropertyChangeListener("dividerLocation", adjustInternalWindowBounds);
 
         this.getContentPane().add(center);
 
@@ -212,6 +226,13 @@ public class VenusUI extends JFrame {
                     }
                 });
 
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                // TODO: Add option «Automaticlly adjust internal windows» to disable this
+                readjustLayout();
+            }
+        });
+
         // The following will handle the windowClosing event properly in the
         // situation where user Cancels out of "save edits?" dialog.  By default,
         // the GUI frame will be hidden but I want it to do nothing.
@@ -225,6 +246,8 @@ public class VenusUI extends JFrame {
             System.out.println("Internal Error: could not open files" + String.join(", ", paths));
             System.exit(1);
         }
+
+        readjustLayout();
     }
 
 
@@ -1273,6 +1296,29 @@ public class VenusUI extends JFrame {
         return runAssembleAction;
     }
 
+    public void readjustLayout() {
+        int windowWidth = getWidth();
+        int windowHeight = getHeight();
+        // give up some screen space if running at 800 x 600
+        double messageWidthPct = (windowWidth < 1000) ? 0.67 : 0.95;
+        double messageHeightPct = (windowWidth < 1000) ? 0.12 : 0.30;
+        double mainWidthPct = (windowWidth < 1000) ? 0.67 : 0.82;
+        double mainHeightPct = (windowWidth < 1000) ? 0.60 : 0.70;
+        double registersWidthPct = (windowWidth < 1000) ? 0.18 : 0.18;
+        double registersHeightPct = (windowWidth < 1000) ? 0.72 : 0.72;
+
+        Dimension messagesPanePreferredSize = new Dimension((int) (windowWidth * messageWidthPct), (int) (windowHeight * messageHeightPct));
+        Dimension mainPanePreferredSize = new Dimension((int) (windowWidth * mainWidthPct), (int) (windowHeight * mainHeightPct));
+        Dimension registersPanePreferredSize = new Dimension((int) (windowWidth * registersWidthPct), (int) (windowHeight * registersHeightPct));
+
+        registersPane.setPreferredSize(registersPanePreferredSize);
+        mainPane.setPreferredSize(mainPanePreferredSize);
+        messagesPane.setPreferredSize(messagesPanePreferredSize);
+
+        horizonSplitter.setDividerLocation(mainWidthPct);
+        splitter.setDividerLocation(mainHeightPct);
+    }
+    
     /**
      * Have the menu request keyboard focus.  DPS 5-4-10
      */
