@@ -7,6 +7,7 @@ import rars.Settings;
 import rars.simulator.ProgramArgumentList;
 import rars.simulator.Simulator;
 import rars.util.SystemIO;
+import rars.riscv.hardware.Keyboard;      
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -18,6 +19,8 @@ import javax.swing.undo.UndoableEdit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -76,6 +79,13 @@ public class MessagesPane extends JPanel {
         input.setFont(monoFont);
         output.setFont(monoFont);
         programArguments.setFont(monoFont);
+
+        run.addKeyListener(new KeyAdapter() {
+              @Override public void keyTyped(KeyEvent e) {
+                // TODO: make this optional?
+                Keyboard.keyPress(e.getKeyChar());
+              }
+          });
 
         JButton assembleTabClearButton = new JButton("Clear");
         assembleTabClearButton.setToolTipText("Clear the Messages area");
@@ -407,7 +417,7 @@ public class MessagesPane extends JPanel {
      *
      * @param message String to append to assembler display text
      */
-    public void postMessage(String message) {
+    public void postMessage(String message) { // TODO: invokeLater?
         append(assemble, message);
         leftPane.setSelectedComponent(assembleTab);
     }
