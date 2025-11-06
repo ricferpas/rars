@@ -423,6 +423,7 @@ public class DataSegmentWindow extends JInternalFrame implements Observer {
             names[i] = getHeaderStringForColumn(i, addressBase);
         }
         dataTable = new MyTippedJTable(new DataTableModel(dataData, names));
+        dataTable.setShowGrid(Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES));
         updateRowHeight();
         // Do not allow user to re-order columns; column order corresponds to MIPS memory order
         dataTable.getTableHeader().setReorderingAllowed(false);

@@ -6,6 +6,7 @@ import rars.assembler.Directives;
 import rars.riscv.*;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
@@ -258,6 +259,7 @@ public class HelpHelpAction extends GuiAction {
         JScrollPane scrollPane = new JScrollPane(examples, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         examples.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        examples.setCellRenderer(new MyCellRenderer());
         return scrollPane;
     }
 
@@ -366,6 +368,9 @@ public class HelpHelpAction extends GuiAction {
             setEnabled(list.isEnabled());
             setFont(list.getFont());
             setOpaque(true);
+            if (Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES)) {
+                setBorder(new LineBorder(UIManager.getColor("Table.gridColor")));
+            }
             return this;
         }
     }

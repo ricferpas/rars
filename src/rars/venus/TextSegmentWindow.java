@@ -88,6 +88,7 @@ public class TextSegmentWindow extends JInternalFrame implements Observer {
             tableModel.fireTableDataChanged();// initialize listener
         }
         table = new MyTippedJTable(tableModel);
+        table.setShowGrid(Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES));
         updateRowHeight();
 
         // prevents cells in row from being highlighted when user clicks on breakpoint checkbox

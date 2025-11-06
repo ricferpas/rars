@@ -148,7 +148,12 @@ public class Settings extends Observable {
         /**
          * Use alternating colors for rows in some tables.
          */
-        ALTERNATING_TABLE_ROW_COLORS("AlternatingTableRowColors", false);
+        ALTERNATING_TABLE_ROW_COLORS("AlternatingTableRowColors", false),
+
+        /**
+         * Display grid lines tables.
+         */
+        TABLES_GRID_LINES("TablesGridLines", true);
 
         // TODO: add option for turning off user trap handling and interrupts
         private String name;

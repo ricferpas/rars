@@ -58,6 +58,7 @@ public abstract class RegisterBlockWindow extends JPanel implements Observer {
         table = new MyTippedJTable(new RegTableModel(setupWindow()), registerDescriptions,
                 new String[]{"Each register has a tool tip describing its usage convention", "Corresponding register number", valueTip}) {
         };
+        table.setShowGrid(Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES));
         updateRowHeight();
         table.getColumnModel().getColumn(NAME_COLUMN).setPreferredWidth(20);
         table.getColumnModel().getColumn(NUMBER_COLUMN).setPreferredWidth(10);

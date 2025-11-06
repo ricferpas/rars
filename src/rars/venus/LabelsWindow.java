@@ -2,6 +2,7 @@ package rars.venus;
 
 import rars.Globals;
 import rars.RISCVprogram;
+import rars.Settings;
 import rars.assembler.Symbol;
 import rars.assembler.SymbolTable;
 import rars.riscv.hardware.Memory;
@@ -169,6 +170,7 @@ public class LabelsWindow extends JInternalFrame {
                 tableNames.add(nameLabel);
                 allSymtabTables.add(nameLabel);
                 JTable table = symtab.generateLabelTable();
+                table.setShowGrid(Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES));
                 tableHeader = table.getTableHeader();
                 // The following is selfish on my part.  Column re-ordering doesn't work correctly when
                 // displaying multiple symbol tables; the headers re-order but the columns do not.
@@ -315,6 +317,7 @@ public class LabelsWindow extends JInternalFrame {
             LabelTableModel m = new LabelTableModel(labelData, LabelsWindow.columnNames);
             if (labelTable == null) {
                 labelTable = new MyTippedJTable(m);
+                labelTable.setShowGrid(Globals.getSettings().getBooleanSetting(Settings.Bool.TABLES_GRID_LINES));
             } else {
                 labelTable.setModel(m);
             }
