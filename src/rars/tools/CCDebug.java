@@ -191,11 +191,18 @@ public class CCDebug {
         if (state.callerStatement == null) {
             return "(no calls)";
         } else {
-            String r = "Callers: " + state.callerStatement.getSourceLine();
+            String sf = state.callerStatement.getSourceFile();
+            String r = "Callers: " + sf + ":" + state.callerStatement.getSourceLine();
             int n = 1;
             State s = state.caller;
             while (s != null && s.callerStatement != null && n < 25) {
-                r += ", " + s.callerStatement.getSourceLine();
+                r += ", ";
+                var nsf = state.callerStatement.getSourceFile();
+                if (!sf.equals(nsf)) {
+                  sf = nsf;
+                  r += sf + ":";
+                }
+                r += s.callerStatement.getSourceLine();
                 s = s.caller;
                 ++n;
             }
