@@ -801,7 +801,7 @@ public class TextSegmentWindow extends JInternalFrame implements Observer {
                 cell.setBackground(settings.getColorSettingByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_BACKGROUND));
                 cell.setForeground(settings.getColorSettingByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_FOREGROUND));
                 cell.setFont(settings.getFontByPosition(Settings.TEXTSEGMENT_HIGHLIGHT_FONT));
-            } else if (row % 2 == 0) {
+            } else if (row % 2 == 0 && Globals.getSettings().getBooleanSetting(Settings.Bool.ALTERNATING_TABLE_ROW_COLORS)) {
                 cell.setBackground(settings.getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND));
                 cell.setForeground(settings.getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND));
                 cell.setFont(settings.getFontByPosition(Settings.EVEN_ROW_FONT));
@@ -824,7 +824,7 @@ public class TextSegmentWindow extends JInternalFrame implements Observer {
                                                        boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel cell = (JLabel) super.getTableCellRendererComponent(table, value,
                     isSelected, hasFocus, row, column);
-            if (row % 2 == 0) {
+            if (row % 2 == 0 && Globals.getSettings().getBooleanSetting(Settings.Bool.ALTERNATING_TABLE_ROW_COLORS)) {
                 cell.setBackground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND));
                 cell.setForeground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND));
             } else {

@@ -360,7 +360,7 @@ public class HelpHelpAction extends GuiAction {
                 setBackground(list.getSelectionBackground());
                 setForeground(list.getSelectionForeground());
             } else {
-                setBackground((index % 2 == 0) ? Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) : list.getBackground());
+                setBackground((index % 2 == 0 && Globals.getSettings().getBooleanSetting(Settings.Bool.ALTERNATING_TABLE_ROW_COLORS)) ? Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND) : list.getBackground());
                 setForeground(list.getForeground());
             }
             setEnabled(list.isEnabled());

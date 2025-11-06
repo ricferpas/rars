@@ -143,8 +143,13 @@ public class Settings extends Observable {
         /**
          * Flag to enable or disable the calling conventions debugger.
          */
-        CC_DEBUG_ENABLED("CCDebug", true);
-        
+        CC_DEBUG_ENABLED("CCDebug", true),
+
+        /**
+         * Use alternating colors for rows in some tables.
+         */
+        ALTERNATING_TABLE_ROW_COLORS("AlternatingTableRowColors", false);
+
         // TODO: add option for turning off user trap handling and interrupts
         private String name;
         private boolean value;
