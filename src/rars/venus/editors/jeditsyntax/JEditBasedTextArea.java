@@ -69,7 +69,11 @@ public class JEditBasedTextArea extends JEditTextArea implements TextEditingArea
     }
 
 
+    @Override
     public void setFont(Font f) {
+        var lf = lineNumbers.getFont();
+        lineNumbers.setFont(new Font(lf.getName(), lf.getStyle(), f.getSize()));
+        super.setFont(f);
         getPainter().setFont(f);
     }
 

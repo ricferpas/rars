@@ -2,6 +2,7 @@ package rars.venus.editors.jeditsyntax;
 
 import rars.Globals;
 import rars.Settings;
+import rars.venus.ZoomMouseWheelListener;
 import rars.venus.editors.jeditsyntax.tokenmarker.Token;
 import rars.venus.editors.jeditsyntax.tokenmarker.TokenMarker;
 
@@ -116,6 +117,7 @@ public class JEditTextArea extends JComponent {
         painter.addMouseListener(new MouseHandler());
         painter.addMouseMotionListener(new DragHandler());
         painter.addMouseWheelListener(new MouseWheelHandler()); // DPS 5-5-10
+        painter.addMouseWheelListener(new ZoomMouseWheelListener(this));
         addFocusListener(new FocusHandler());
 
         // Load the defaults
@@ -155,6 +157,11 @@ public class JEditTextArea extends JComponent {
         focusedComponent = this;
     }
 
+@Override
+public void setFont(Font f) {
+    super.setFont(f);
+    updateScrollBars();
+}
 
 /**
  * Returns if this component can be traversed by pressing
@@ -1831,11 +1838,13 @@ public class JEditTextArea extends JComponent {
     // scrollability of the text in its viewport.
     class MouseWheelHandler implements MouseWheelListener {
         public void mouseWheelMoved(MouseWheelEvent e) {
-            int maxMotion = Math.abs(e.getWheelRotation()) * LINES_PER_MOUSE_WHEEL_NOTCH;
-            if (e.getWheelRotation() < 0) {
-                setFirstLine(getFirstLine() - Math.min(maxMotion, getFirstLine()));
-            } else {
-                setFirstLine(getFirstLine() + (Math.min(maxMotion, Math.max(0, getLineCount() - (getFirstLine() + visibleLines)))));
+            if (!e.isControlDown()) {
+                int maxMotion = Math.abs(e.getWheelRotation()) * LINES_PER_MOUSE_WHEEL_NOTCH;
+                if (e.getWheelRotation() < 0) {
+                    setFirstLine(getFirstLine() - Math.min(maxMotion, getFirstLine()));
+                } else {
+                    setFirstLine(getFirstLine() + (Math.min(maxMotion, Math.max(0, getLineCount() - (getFirstLine() + visibleLines)))));
+                }
             }
         }
     }
