@@ -62,8 +62,8 @@ public class VenusUI extends JFrame {
     private JMenuItem runGo, runStep, runBackstep, runReset, runAssemble, runStop, runPause, runClearBreakpoints, runToggleBreakpoints;
     private JCheckBoxMenuItem settingsLabel, settingsValueDisplayBase, settingsAddressDisplayBase,
             settingsExtended, settingsAssembleOnOpen, settingsAssembleAll, settingsAssembleOpen, settingsWarningsAreErrors,
-            settingsStartAtMain, settingsSelfModifyingCode, settingsRV64, settingsDeriveCurrentWorkingDirectory, settingsDarkMode, 
-            settingsDisplayRegisterNumbers;
+            settingsStartAtMain, settingsSelfModifyingCode, settingsRV64, settingsDeriveCurrentWorkingDirectory, settingsDarkMode,
+            settingsAlternatingTableRowColors, settingsDisplayRegisterNumbers;
     private JMenuItem settingsExceptionHandler, settingsEditor, settingsHighlighting, settingsMemoryConfiguration;
     private JMenuItem helpHelp, helpAbout;
 
@@ -90,7 +90,7 @@ public class VenusUI extends JFrame {
             settingsWarningsAreErrorsAction, settingsStartAtMainAction,
             settingsExceptionHandlerAction, settingsEditorAction, settingsHighlightingAction, settingsMemoryConfigurationAction,
             settingsSelfModifyingCodeAction, settingsRV64Action, settingsDeriveCurrentWorkingDirectoryAction, settingsDarkModeAction,
-            settingsDisplayRegisterNumbersAction;
+            settingsAlternatingTableRowColorsAction, settingsDisplayRegisterNumbersAction;
     private Action helpHelpAction, helpAboutAction;
 
 
@@ -466,6 +466,8 @@ public class VenusUI extends JFrame {
                     Settings.Bool.DERIVE_CURRENT_WORKING_DIRECTORY);
             settingsDarkModeAction = new SettingsAction("Dark mode", "If set, RARS will be in dark mode at the next opening. Uncheck for light mode",
                     Settings.Bool.DARK_MODE_ENABLED);
+            settingsAlternatingTableRowColorsAction = new SettingsAction("Alternating row colors in tables", "If set, RARS will use different colors for odd and even rows in tables",
+                    Settings.Bool.ALTERNATING_TABLE_ROW_COLORS);
             settingsDisplayRegisterNumbersAction = new SettingsAction("Display Register Numbers", "Toggle display of register numbers in the Registers Tab",
                     Settings.Bool.DISPLAY_REGISTER_NUMBERS);
 
@@ -640,6 +642,8 @@ public class VenusUI extends JFrame {
                 }
             }
         });
+        settingsAlternatingTableRowColors = new JCheckBoxMenuItem(settingsAlternatingTableRowColorsAction);
+        settingsAlternatingTableRowColors.setSelected(Globals.getSettings().getBooleanSetting(Settings.Bool.DARK_MODE_ENABLED));
         settingsDisplayRegisterNumbers = new JCheckBoxMenuItem(settingsDisplayRegisterNumbersAction);
         settingsDisplayRegisterNumbers.setSelected(Globals.getSettings().getBooleanSetting(Settings.Bool.DISPLAY_REGISTER_NUMBERS));
         settingsAssembleOnOpen = new JCheckBoxMenuItem(settingsAssembleOnOpenAction);
@@ -673,6 +677,7 @@ public class VenusUI extends JFrame {
         settings.add(settingsRV64);
         settings.addSeparator();
         settings.add(settingsDarkMode);
+        settings.add(settingsAlternatingTableRowColors);
         settings.add(settingsDisplayRegisterNumbers);
         settings.add(settingsEditor);
         settings.add(settingsHighlighting);
