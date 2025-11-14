@@ -1,5 +1,8 @@
 package rars.venus;
 
+import rars.Globals;
+import rars.Settings;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -33,10 +36,20 @@ public class MonoRightCellRenderer extends DefaultTableCellRenderer {
         String cellText = cell.getText();
         FontMetrics fm = getFontMetrics( getFont() );
 
-        //  Not enough space so start rendering from the end of the string
+        if (row % 2 == 0 && Globals.getSettings().getBooleanSetting(Settings.Bool.ALTERNATING_TABLE_ROW_COLORS)) {
+            cell.setBackground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND));
+            cell.setForeground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND));
+            cell.setFont(Globals.getSettings().getFontByPosition(Settings.EVEN_ROW_FONT));
+        } else {
+            cell.setBackground(Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND));
+            cell.setForeground(Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND));
+            cell.setFont(Globals.getSettings().getFontByPosition(Settings.ODD_ROW_FONT));
+        }
+
+    //  Not enough space so start rendering from the end of the string
         //  until all the space is used up
         if (fm.stringWidth(cellText) > availableWidth) {
-            String dots = "...";
+            String dots = "…";
             int textWidth = fm.stringWidth(dots);
             int i = cellText.length() - 1;
 

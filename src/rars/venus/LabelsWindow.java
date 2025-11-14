@@ -321,6 +321,7 @@ public class LabelsWindow extends JInternalFrame {
             } else {
                 labelTable.setModel(m);
             }
+            labelTable.getColumnModel().getColumn(LABEL_COLUMN).setCellRenderer(new ColoredDefaultCellRenderer());
             labelTable.getColumnModel().getColumn(ADDRESS_COLUMN).setCellRenderer(new MonoRightCellRenderer());
             labelTable.setRowSelectionAllowed(false);
             return labelTable;

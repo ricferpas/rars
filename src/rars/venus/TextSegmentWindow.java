@@ -898,8 +898,15 @@ public class TextSegmentWindow extends JInternalFrame implements Observer {
                     setForeground(table.getSelectionForeground());
                     setBackground(table.getSelectionBackground());
                 } else {
-                    setForeground(table.getForeground());
-                    setBackground(table.getBackground());
+                    if (row % 2 == 0 && Globals.getSettings().getBooleanSetting(Settings.Bool.ALTERNATING_TABLE_ROW_COLORS)) {
+                        setBackground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_BACKGROUND));
+                        setForeground(Globals.getSettings().getColorSettingByPosition(Settings.EVEN_ROW_FOREGROUND));
+                        setFont(Globals.getSettings().getFontByPosition(Settings.EVEN_ROW_FONT));
+                    } else {
+                        setBackground(Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_BACKGROUND));
+                        setForeground(Globals.getSettings().getColorSettingByPosition(Settings.ODD_ROW_FOREGROUND));
+                        setFont(Globals.getSettings().getFontByPosition(Settings.ODD_ROW_FONT));
+                    }
                 }
 
                 setEnabled(table.isEnabled() && breakpointsEnabled);
