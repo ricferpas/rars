@@ -50,6 +50,7 @@ campo:
 pantalla:
 	.space	1032
 	.align	2
+num_piezas:
 	.word	7
 	.align	2
 piezas:
@@ -920,12 +921,18 @@ hack:
 	li	a0, 0
 	addi	sp, sp, 16
 	tail	integer_to_string
+
+print_integer:
 	li	a7, 1
 	ecall	
 	ret	
+
+read_integer:
 	li	a7, 5
 	ecall	
 	ret	
+
+read_string:
 	li	a7, 8
 	ecall	
 	ret	
@@ -944,6 +951,8 @@ get_time:
 	li	a7, 30
 	ecall	
 	ret	
+
+system_sleep:
 	li	a7, 32
 	ecall	
 	ret	
@@ -962,6 +971,8 @@ exit:
 	li	a7, 93
 	ecall	
 	ret	
+
+random_int:
 	li	a7, 41
 	ecall	
 	ret	
@@ -983,6 +994,8 @@ keyio_poll_key:
 	sb	a2, 0(t0)
 keyio_poll_key_return:
 	ret	
+
+memcpy:
 	mv	a3, a0
 memcpy_loop:
 	beqz	a2, memcpy_return
@@ -994,6 +1007,8 @@ memcpy_loop:
 	j	memcpy_loop
 memcpy_return:
 	ret	
+
+memset:
 	mv	t0, a0
 memset_loop:
 	beqz	a2, memset_return
