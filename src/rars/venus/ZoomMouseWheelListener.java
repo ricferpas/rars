@@ -1,7 +1,5 @@
 package rars.venus;
 
-import rars.Globals;
-
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -18,13 +16,18 @@ public class ZoomMouseWheelListener implements MouseWheelListener {
         item = c;
     }
 
+    public void resetInitialSize() { // should be called when the base font changes
+        initial_size = item.getFont().getSize();
+        maxNotches = Math.max(maxNotches, initial_size);
+        totalNotches = 0;
+    }
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.isControlDown()) {
             if (initial_size < 0) {
-                initial_size = item.getFont().getSize();
-                maxNotches = Math.max(maxNotches, initial_size);
                 assert (totalNotches == 0);
+                resetInitialSize();
             }
             totalNotches = totalNotches + e.getWheelRotation();
             totalNotches = Math.min(Math.max(totalNotches, minNotches), maxNotches);

@@ -74,6 +74,7 @@ public class JEditTextArea extends JComponent {
 
 
     private JScrollBar lineNumbersVertical;
+    private ZoomMouseWheelListener sourceCodeZoomWheelListener;
 
     /**
      * Creates a new JEditTextArea with the specified settings.
@@ -117,7 +118,8 @@ public class JEditTextArea extends JComponent {
         painter.addMouseListener(new MouseHandler());
         painter.addMouseMotionListener(new DragHandler());
         painter.addMouseWheelListener(new MouseWheelHandler()); // DPS 5-5-10
-        painter.addMouseWheelListener(new ZoomMouseWheelListener(this));
+        sourceCodeZoomWheelListener = new ZoomMouseWheelListener(painter);
+        painter.addMouseWheelListener(sourceCodeZoomWheelListener);
         addFocusListener(new FocusHandler());
 
         // Load the defaults
@@ -1480,6 +1482,7 @@ public void setFont(Font f) {
     protected static Timer caretTimer;
 
     protected TextAreaPainter painter;
+    protected ZoomMouseWheelListener zoomWheelListener;
 
     protected JPopupMenu popup;
 
