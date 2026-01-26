@@ -1,5 +1,7 @@
 package rars.venus;
 
+import rars.Globals;
+
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -10,7 +12,7 @@ public class ZoomMouseWheelListener implements MouseWheelListener {
 
     int totalNotches = 0;
     int minNotches = -500;
-    int maxNotches = 0; // max ammount of reduction
+    int maxNotches = 0; // max amount of reduction
 
     public ZoomMouseWheelListener(Component c) {
         item = c;
@@ -28,9 +30,10 @@ public class ZoomMouseWheelListener implements MouseWheelListener {
             totalNotches = Math.min(Math.max(totalNotches, minNotches), maxNotches);
             int ns = Math.max(1, initial_size - totalNotches);
             var f = item.getFont();
-            item.setFont(new Font(f.getName(), f.getStyle(), ns));
+            var nf = new Font(f.getName(), f.getStyle(), ns);
+            item.setFont(nf);
         } else {
-            // let the parent (posibly a JScrollPane) handle it
+            // let the parent (possibly a JScrollPane) handle it
             e.getComponent().getParent().dispatchEvent(e);
         }
     }
