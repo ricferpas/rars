@@ -75,6 +75,7 @@ public class JEditBasedTextArea extends JEditTextArea implements TextEditingArea
         lineNumbers.setFont(new Font(lf.getName(), lf.getStyle(), f.getSize()));
         super.setFont(f);
         getPainter().setFont(f);
+        updateSyntaxStyles();
     }
 
 
