@@ -214,6 +214,7 @@ public class Launch {
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF. Continue with default LaF." );
         }
+        Settings.initDefaultFontSizeSettingsValues(); // now that the LAF is initialized
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {

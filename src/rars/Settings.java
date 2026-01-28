@@ -278,9 +278,22 @@ public class Settings extends Observable {
     private static final String[] defaultFontStyleSettingsValues = {"Plain", "Plain", "Plain", "Plain",
             "Plain", "Plain", "Plain"
     };
-    private static final String[] defaultFontSizeSettingsValues = {"12", "12", "12", "12", "12", "12", "12",
+    private static String[] defaultFontSizeSettingsValues = {"12", "12", "12", "12", "12", "12", "12",
     };
 
+    /**
+     * Find the default font size currently used by the system. To be called after the LAF has been initialized
+     */
+    static void initDefaultFontSizeSettingsValues() {
+        String systemDefaultFontSize = String.valueOf(new JLabel("").getFont().getSize());
+        for (int i = 0; i < defaultFontSizeSettingsValues.length; ++i) {
+            defaultFontSizeSettingsValues[i] = systemDefaultFontSize;
+        }
+        if (Globals.settings != null) {
+            // Reinitialize to apply correct default fonts. This is obviously hacky and inefficient because settings are read twice on startup if the gui is enabled, but doing it properly wiould require a large refactoring. The problem is that the default font cannot be known until the LAF has been initialized, but settings are initialized before we even know if the LAF will need to be initialized.
+            Globals.settings.initialize();
+        }
+    }
 
     // COLOR SETTINGS.  Each array position has associated name.
     /**
