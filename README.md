@@ -1,14 +1,6 @@
-# RARSM -- RISC-V Assembler and Runtime Simulator (iMproved)
+# RARS UM -- RISC-V Assembler and Runtime Simulator
 
-Fork of [RARS](https://github.com/TheThirdOne/rars) with added features (PRed updtream)
+Fork of [RARSM](https://github.com/rarsm/rars).
 
-* https://github.com/TheThirdOne/rars/pull/190
-* https://github.com/TheThirdOne/rars/pull/191
-* https://github.com/TheThirdOne/rars/pull/192
-* https://github.com/TheThirdOne/rars/pull/193
-* https://github.com/TheThirdOne/rars/pull/194
-* https://github.com/TheThirdOne/rars/pull/195
-* https://github.com/TheThirdOne/rars/pull/196
-* https://github.com/TheThirdOne/rars/pull/197
+See also [riscv2rars](github.com/ricferpas/riscv2rars).
 
-Unfortunately, upstream is not responsive, so we stopped doing PR as they require some unmerges ones.
