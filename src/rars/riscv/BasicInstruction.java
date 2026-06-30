@@ -64,13 +64,6 @@ public abstract class BasicInstruction extends Instruction {
         }
     }
 
-    // Temporary constructor so that instructions without description yet will compile.
-
-    public BasicInstruction(String example, BasicInstructionFormat instrFormat,
-                            String operMask) {
-        this(example, "", instrFormat, operMask);
-    }
-
     /**
      * Gets the 32-character operation mask.  Each mask position represents a
      * bit position in the 32-bit machine instruction.  Operation codes and
